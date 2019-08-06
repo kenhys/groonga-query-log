@@ -325,6 +325,26 @@ class ResponseComparerTest < Test::Unit::TestCase
       end
     end
 
+    class ForceNoCareSameValueOrderTest < self
+      def test_one_group
+        @command["output_columns"] = "_key,timestamp"
+        assert_true(same?([[[3], [["_key", "ShortText"], ["timestamp", "Time"], ["Alice", 1565080714.0], ["Bob", 1565080714.0]]]],
+                          [[[3], [["_key", "ShortText"], ["timestamp", "Time"], ["Bob", 1565080714.0], ["Alice", 1565080714.0]]]],
+                          :care_same_value_order => false))
+      end
+
+      def test_two_group
+        @command["output_columns"] = "_key,timestamp"
+        assert_true(same?([[[3], [["_key", "ShortText"], ["timestamp", "Time"],
+                                  ["Alice", 15000000000.0], ["Bob", 15000000000.0],
+                                  ["Carol", 16000000000.0], ["Dave", 16000000000.0]]]],
+                          [[[3], [["_key", "ShortText"], ["timestamp", "Time"],
+                                  ["Bob", 15000000000.0], ["Alice", 15000000000.0],
+                                  ["Dave", 16000000000.0], ["Carol", 16000000000.0]]]],
+                          :care_same_value_order => false))
+      end
+    end
+
     class FloatAccurancy < self
       def create_response(latitude, longitude)
         [
