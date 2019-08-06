@@ -236,6 +236,11 @@ module GroongaQueryLog
                   "Don't care order of select response records") do
           @care_order = false
         end
+        parser.on("--no-care-same-value-order=COLUMN",
+                  "Don't care order of select response records when the record has same value") do |column|
+          @care_same_value_order = column
+        end
+
         parser.on("--ignore-drilldown-key=KEY",
                   "Don't compare drilldown result for KEY",
                   "You can specify multiple drilldown keys by",
